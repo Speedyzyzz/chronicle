@@ -1,0 +1,14 @@
+{
+  "name": "@frontier-runtimes/chronicle-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for Chronicle Deterministic Record-and-Replay Runtime",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.7"
+  }
+}

@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  chronicle-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@chronicle-postgres:5432/chronicle
+      - BLOB_STORAGE_PATH=/data/blobs
+      - DEFAULT_LLM_PROVIDER=offline
+    volumes:
+      - chronicle-blobs:/data/blobs
+    depends_on:
+      - chronicle-postgres
+
+  chronicle-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - chronicle-backend
+
+  chronicle-postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=chronicle
+    ports:
+      - "5432:5432"
+    volumes:
+      - chronicle-pgdata:/var/lib/postgresql/data
+
+volumes:
+  chronicle-blobs:
+  chronicle-pgdata:
